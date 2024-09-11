@@ -23,7 +23,8 @@ namespace Contacts.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            return users;
         }
 
 
@@ -59,11 +60,11 @@ namespace Contacts.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> UpdatePerson(int id, [FromBody] User user)
         {
             if (id != user.Id)
             {
-                return BadRequest();
+                return BadRequest("Id does not match");
             }
 
             _context.Entry(user).State = EntityState.Modified;
@@ -86,6 +87,7 @@ namespace Contacts.Controllers
 
             return NoContent();
         }
+
 
 
         [HttpDelete("{id}")]
